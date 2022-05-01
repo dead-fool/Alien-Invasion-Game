@@ -54,6 +54,8 @@ class Scoreboard:
         if self.stats.score > self.stats.high_score:
             self.stats.high_score = self.stats.score
             self.prep_high_score()
+            with open('highscores.txt', 'w') as fh:
+                fh.write(str(self.stats.high_score))
 
     def prep_level(self):
         level_str = str(self.stats.level)

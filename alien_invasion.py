@@ -222,6 +222,10 @@ class AlienInvasion:
         self.sb.show_score()
 
         if not self.stats.game_active:
+            bg_img1 = pygame.image.load('images/home.jpg')
+            bg_img1 = pygame.transform.scale(
+                bg_img1, (self.settings.screen_width, self.settings.screen_height))
+            self.screen.blit(bg_img1, (0, 0))
             self.play_button.draw_button()
 
         pygame.display.flip()
