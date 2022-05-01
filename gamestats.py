@@ -18,7 +18,7 @@ class GameStats:
             with open('highscores.txt', 'r') as file_h:
                 for line in file_h:
                     self.high_score = int(line.strip())
-                    print(self.high_score)
+
         except FileNotFoundError:
             self.high_score = 0
             with open('highscores.txt', 'w') as file_h:

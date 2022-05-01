@@ -35,6 +35,7 @@ class AlienInvasion:
         self._create_fleet()
 
         self.play_button = Button(self, "Play")
+        self.play_button2 = Button(self, "Lets Go !")
 
     def run_game(self):
         """Start the main loop for the game."""
@@ -66,6 +67,9 @@ class AlienInvasion:
     def _check_play_button(self, mouse_pos):
         button_clicked = self.play_button.rect.collidepoint(mouse_pos)
         if button_clicked and not self.stats.game_active:
+            self.play_button2.draw_button()
+            pygame.display.flip()
+            sleep(1)
             self.settings.initialize_dynamic_settings()
             self.stats.reset_stats()
             self.stats.game_active = True
@@ -222,7 +226,7 @@ class AlienInvasion:
         self.sb.show_score()
 
         if not self.stats.game_active:
-            bg_img1 = pygame.image.load('images/home.jpg')
+            bg_img1 = pygame.image.load('images/home.png')
             bg_img1 = pygame.transform.scale(
                 bg_img1, (self.settings.screen_width, self.settings.screen_height))
             self.screen.blit(bg_img1, (0, 0))
@@ -232,6 +236,6 @@ class AlienInvasion:
 
 
 if __name__ == '__main__':
-    # Make a game instance, and run the game.
+    # Make a game instance, and run the game
     ai = AlienInvasion()
     ai.run_game()
