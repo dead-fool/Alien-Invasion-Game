@@ -34,8 +34,9 @@ class AlienInvasion:
 
         self._create_fleet()
 
-        self.play_button = Button(self, "Play")
-        self.play_button2 = Button(self, "Lets Go !")
+        self.play_button = Button(self, "images/play.png")
+        self.highscores_button = Button(self, "images/highscores.png")
+        self.quit_button = Button(self, 'images/quit.png')
 
     def run_game(self):
         """Start the main loop for the game."""
@@ -51,38 +52,92 @@ class AlienInvasion:
 
     def _check_events(self):
         """Respond to keypresses and mouse events."""
+        self._hover_effect()
+
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 sys.exit()
 
             elif event.type == pygame.MOUSEBUTTONDOWN:
                 mouse_pos = pygame.mouse.get_pos()
-                self._check_play_button(mouse_pos)
+                self._check_mousebuttondown_event(mouse_pos)
 
             elif event.type == pygame.KEYDOWN:
                 self._check_keydown_events(event)
             elif event.type == pygame.KEYUP:
                 self._check_keyup_events(event)
 
-    def _check_play_button(self, mouse_pos):
-        button_clicked = self.play_button.rect.collidepoint(mouse_pos)
-        if button_clicked and not self.stats.game_active:
-            self.play_button2.draw_button()
+    def _hover_effect(self):
+        if self.play_button.button_rect.collidepoint(pygame.mouse.get_pos()) and self.stats.game_active == False:
+            self.play_button = Button(self, 'images/play2.png')
+            self.play_button.draw_button()
             pygame.display.flip()
-            sleep(1)
-            self.settings.initialize_dynamic_settings()
-            self.stats.reset_stats()
-            self.stats.game_active = True
-            self.sb.prep_score()
-            self.sb.prep_level()
-            self.sb.prep_ships()
 
-            self.aliens.empty()
-            self.bullets.empty()
+        if (self.play_button.button_rect.collidepoint(pygame.mouse.get_pos()) == False) and self.stats.game_active == False:
+            self.play_button = Button(self, 'images/play.png')
+            self.play_button.draw_button()
+            pygame.display.flip()
 
-            self._create_fleet()
-            self.ship.center_ship()
-            pygame.mouse.set_visible(False)
+        if self.highscores_button.button_rect.collidepoint(pygame.mouse.get_pos()) and self.stats.game_active == False:
+            self.highscores_button = Button(self, 'images/highscores2.png')
+            self.highscores_button.draw_button()
+            pygame.display.flip()
+
+        if (self.highscores_button.button_rect.collidepoint(pygame.mouse.get_pos()) == False) and self.stats.game_active == False:
+            self.highscores_button = Button(self, 'images/highscores.png')
+            self.highscores_button.draw_button()
+            pygame.display.flip()
+
+        if self.quit_button.button_rect.collidepoint(pygame.mouse.get_pos()) and self.stats.game_active == False:
+            self.quit_button = Button(self, 'images/quit2.png')
+            self.quit_button.draw_button()
+            pygame.display.flip()
+
+        if (self.quit_button.button_rect.collidepoint(pygame.mouse.get_pos()) == False) and self.stats.game_active == False:
+            self.quit_button = Button(self, 'images/quit.png')
+            self.quit_button.draw_button()
+            pygame.display.flip()
+
+    def _check_mousebuttondown_event(self, mouse_pos):
+        playbutton_clicked = self.play_button.button_rect.collidepoint(
+            mouse_pos)
+        quitbutton_clicked = self.quit_button.button_rect.collidepoint(
+            mouse_pos)
+
+        if playbutton_clicked and not self.stats.game_active:
+            self._playbutton_action()
+
+        if quitbutton_clicked and not self.stats.game_active:
+            sys.exit()
+
+    def _playbutton_action(self):
+        self._display_msg()
+        pygame.display.flip()
+        sleep(1)
+        self._set_game()
+        pygame.mouse.set_visible(False)
+
+    def _display_msg(self):
+        self.screen.fill((230, 230, 230))
+        msg = pygame.image.load('images/lets.png')
+        msg = pygame.transform.scale(msg, (330, 220))
+        msg_rect = msg.get_rect()
+        msg_rect.center = self.screen.get_rect().center
+        self.screen.blit(msg, msg_rect)
+
+    def _set_game(self):
+        self.settings.initialize_dynamic_settings()
+        self.stats.reset_stats()
+        self.stats.game_active = True
+        self.sb.prep_score()
+        self.sb.prep_level()
+        self.sb.prep_ships()
+
+        self.aliens.empty()
+        self.bullets.empty()
+
+        self._create_fleet()
+        self.ship.center_ship()
 
     def _check_keydown_events(self, event):
         """Respond to keypresses."""
@@ -92,6 +147,11 @@ class AlienInvasion:
             self.ship.moving_left = True
         elif event.key == pygame.K_q:
             sys.exit()
+
+        elif event.key == pygame.K_ESCAPE:
+            self.stats.game_active = False
+            pygame.mouse.set_visible(True)
+
         elif event.key == pygame.K_SPACE:
             self._fire_bullet()
 
@@ -163,6 +223,7 @@ class AlienInvasion:
             sleep(0.5)
 
         else:
+            sleep(1)
             self.stats.game_active = False
             pygame.mouse.set_visible(True)
 
@@ -226,13 +287,18 @@ class AlienInvasion:
         self.sb.show_score()
 
         if not self.stats.game_active:
-            bg_img1 = pygame.image.load('images/home.png')
-            bg_img1 = pygame.transform.scale(
-                bg_img1, (self.settings.screen_width, self.settings.screen_height))
-            self.screen.blit(bg_img1, (0, 0))
-            self.play_button.draw_button()
+            self._home_screen()
 
         pygame.display.flip()
+
+    def _home_screen(self):
+        bg_img1 = pygame.image.load('images/home.png')
+        bg_img1 = pygame.transform.scale(
+            bg_img1, (self.settings.screen_width, self.settings.screen_height))
+        self.screen.blit(bg_img1, (0, 0))
+        self.play_button.draw_button()
+        self.quit_button.draw_button()
+        self.highscores_button.draw_button()
 
 
 if __name__ == '__main__':
