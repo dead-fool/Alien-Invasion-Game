@@ -2,6 +2,7 @@ import sys
 from time import sleep
 
 import pygame
+import pygame.font
 
 from settings import Settings
 from gamestats import GameStats
@@ -24,8 +25,9 @@ class AlienInvasion:
         self.settings.screen_width = self.screen.get_rect().width
         self.settings.screen_height = self.screen.get_rect().height
         pygame.display.set_caption("Alien Invasion")
-
+        self.screen.fill((230, 230, 230))
         self.stats = GameStats(self)
+        self._welcome_msg()
         self.sb = Scoreboard(self)
 
         self.ship = Ship(self)
@@ -37,6 +39,18 @@ class AlienInvasion:
         self.play_button = Button(self, "images/play.png")
         self.highscores_button = Button(self, "images/highscores.png")
         self.quit_button = Button(self, 'images/quit.png')
+
+    def _welcome_msg(self):
+        style = pygame.font.SysFont("comicsansms", 80)
+        msg_img = style.render(
+            f"Welcome, {self.stats.username}!", True, (0, 0, 0))
+        msg_img_rect = msg_img.get_rect()
+        msg_img_rect.center = self.screen.get_rect().center
+        self.screen.fill((230, 230, 230))
+        self.screen.blit(msg_img, msg_img_rect)
+        pygame.display.flip()
+        sleep(3)
+        self.screen.fill((230, 230, 230))
 
     def run_game(self):
         """Start the main loop for the game."""
