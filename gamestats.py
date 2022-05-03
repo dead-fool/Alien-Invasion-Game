@@ -26,6 +26,7 @@ class GameStats:
         try:
             with open('highscores.json', 'r') as fh:
                 self.high_scores = json.load(fh)
+
             self.high_scores[self.username] = self.high_scores.get(
                 self.username, 0)
 
@@ -44,7 +45,7 @@ class GameStats:
         self._display_usernameprompt()
         style = pygame.font.SysFont("centuryregular", 70)
         input_box = pygame.Rect(self.screen.get_rect(
-        ).centerx - 400, self.screen.get_rect().centery, 800, 70)
+        ).centerx - 300, self.screen.get_rect().centery, 600, 70)
         color_inactive = (173, 239, 209)
         color_active = (0, 32, 63)
         color = color_inactive
@@ -78,9 +79,12 @@ class GameStats:
             # blit the input box
             # width = 0 fills the rectangle
             pygame.draw.rect(self.screen, color, input_box, 0)
-            txt_surface = style.render(text + "|", True, (230, 230, 230))
+            if active:
+                txt_surface = style.render(text + "|", True, (230, 230, 230))
+            else:
+                txt_surface = style.render(text, True, (0, 0, 0))
             # blit the text
-            self.screen.blit(txt_surface, (input_box.x + 5, input_box.y + 5))
+            self.screen.blit(txt_surface, (input_box.x + 5, input_box.y + 10))
 
             pygame.display.flip()
 
@@ -88,7 +92,8 @@ class GameStats:
 
     def _display_usernameprompt(self):
         style = pygame.font.Font(None, 64)
-        prompt_img = style.render("Enter Username:", True, (0, 0, 0))
+        prompt_img = style.render(
+            "Enter Username: (<18 characters)", True, (0, 0, 0))
         self.prompt_rect = prompt_img.get_rect()
         self.prompt_rect.centerx = self.screen.get_rect().centerx
         self.prompt_rect.centery = self.screen.get_rect().centery - 100

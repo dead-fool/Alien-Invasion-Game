@@ -1,0 +1,9 @@
+How to play:
+
+- Shoot the aliens using spacebar.
+- Dont let the aliens reach the bottom.
+- Dont let the aliens touch the ship.
+- Use arrow keys to move the ship sideways.
+- When there is no ships available, the game is over.
+- Press Q to quit and exit out of the game anytime.
+- Press Esc to go back to home screen.

@@ -51,7 +51,7 @@ class AlienInvasion:
         self.screen.fill((230, 230, 230))
         self.screen.blit(msg_img, msg_img_rect)
         pygame.display.flip()
-        sleep(3)
+        sleep(2)
         self.screen.fill((230, 230, 230))
 
     def run_game(self):
