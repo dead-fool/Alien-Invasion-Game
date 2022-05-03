@@ -1,3 +1,4 @@
+import json
 import pygame
 import pygame.font
 from time import sleep
@@ -13,6 +14,7 @@ class GameStats:
         self.username = ''
         self._get_username()
         self.game_active = False
+        self.high_scores = dict()
         self._get_high_score()
 
     def reset_stats(self):
@@ -22,14 +24,21 @@ class GameStats:
 
     def _get_high_score(self):
         try:
-            with open('highscores.txt', 'r') as file_h:
-                for line in file_h:
-                    self.high_score = int(line.strip())
+            with open('highscores.json', 'r') as fh:
+                self.high_scores = json.load(fh)
+            self.high_scores[self.username] = self.high_scores.get(
+                self.username, 0)
 
         except FileNotFoundError:
-            self.high_score = 0
-            with open('highscores.txt', 'w') as file_h:
-                file_h.write(str(self.high_score))
+            self.high_scores = {f"{self.username}": 0}
+            with open('highscores.json', 'w') as fh:
+                json.dump(self.high_scores, fh)
+
+        self.high_score = self.high_scores[self.username]
+
+    def save_highscores(self):
+        with open('highscores.json', 'w') as fh:
+            json.dump(self.high_scores, fh)
 
     def _get_username(self):
         self._display_usernameprompt()
