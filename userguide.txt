@@ -7,5 +7,3 @@ How to play:
 - When there is no ships available, the game is over.
 - Press Q to quit and exit out of the game anytime.
 - Press Esc to go back to home screen.
-
-hahahaha
