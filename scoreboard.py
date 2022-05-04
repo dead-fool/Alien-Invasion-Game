@@ -12,7 +12,7 @@ class Scoreboard:
         self.screen_rect = self.screen.get_rect()
         self.settings = ai_game.settings
         self.stats = ai_game.stats
-
+        self.min_pos = 4
         self.text_color = (30, 30, 30)
         self.font = pygame.font.SysFont(None, 48)
 
@@ -51,11 +51,41 @@ class Scoreboard:
         self.high_score_rect.top = self.score_rect.top
 
     def check_high_scores(self):
-        if self.stats.score > self.stats.high_score:
-            self.stats.high_score = self.stats.score
-            self.stats.high_scores[self.stats.username] = self.stats.high_score
-            self.stats.save_highscores()
-            self.prep_high_score()
+        if len(self.stats.high_scores_list) == 5:
+
+            if not self.stats.high_score_flag and self.stats.score > min(self.stats.high_scores_list):
+                self.min_pos = self.stats.high_scores_list.index(
+                    min(self.stats.high_scores_list))
+                self.stats.high_scores_list[self.min_pos] = self.stats.score
+                self.stats.high_score = max(self.stats.high_scores_list)
+                self.stats.high_scores_dict[self.stats.username] = self.stats.high_scores_list
+                self.stats.save_highscores()
+                self.prep_high_score()
+                self.stats.high_score_flag = True
+
+            if self.stats.high_score_flag and self.stats.score > self.stats.high_scores_list[self.min_pos]:
+                self.stats.high_scores_list[self.min_pos] = self.stats.score
+                self.stats.high_score = max(self.stats.high_scores_list)
+                self.stats.high_scores_dict[self.stats.username] = self.stats.high_scores_list
+                self.stats.save_highscores()
+                self.prep_high_score()
+
+        else:
+            if self.stats.high_score_flag and self.stats.score > self.stats.high_scores_list[len(self.stats.high_scores_list) - 1]:
+                self.stats.high_scores_list[len(
+                    self.stats.high_scores_list) - 1] = self.stats.score
+                self.stats.high_score = max(self.stats.high_scores_list)
+                self.stats.high_scores_dict[self.stats.username] = self.stats.high_scores_list
+                self.stats.save_highscores()
+                self.prep_high_score()
+
+            if not self.stats.high_score_flag:
+                self.stats.high_scores_list.append(self.stats.score)
+                self.stats.high_score = max(self.stats.high_scores_list)
+                self.stats.high_scores_dict[self.stats.username] = self.stats.high_scores_list
+                self.stats.save_highscores()
+                self.prep_high_score()
+                self.stats.high_score_flag = True
 
     def prep_level(self):
         level_str = str(self.stats.level)

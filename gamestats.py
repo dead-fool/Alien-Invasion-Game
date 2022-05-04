@@ -14,7 +14,9 @@ class GameStats:
         self.username = ''
         self._get_username()
         self.game_active = False
-        self.high_scores = dict()
+        self.high_score_flag = False
+        self.high_scores_dict = dict()
+        self.high_scores_list = list()
         self._get_high_score()
 
     def reset_stats(self):
@@ -25,21 +27,29 @@ class GameStats:
     def _get_high_score(self):
         try:
             with open('highscores.json', 'r') as fh:
-                self.high_scores = json.load(fh)
+                self.high_scores_dict = json.load(fh)
 
-            self.high_scores[self.username] = self.high_scores.get(
-                self.username, 0)
+            self.high_scores_dict[self.username] = self.high_scores_dict.get(
+                self.username, self.high_scores_list)
 
         except FileNotFoundError:
-            self.high_scores = {f"{self.username}": 0}
+            self.high_scores_dict = {f"{self.username}": self.high_scores_list}
             with open('highscores.json', 'w') as fh:
-                json.dump(self.high_scores, fh)
+                json.dump(self.high_scores_dict, fh)
 
-        self.high_score = self.high_scores[self.username]
+        self.high_scores_list = self.high_scores_dict[self.username]
+
+        if self.high_scores_list and len(self.high_scores_list) > 1:
+            self.high_score = max(self.high_scores_list)
+
+        elif self.high_scores_list and len(self.high_scores_list) == 1:
+            self.high_score = self.high_scores_list[0]
+        else:
+            self.high_score = 0
 
     def save_highscores(self):
         with open('highscores.json', 'w') as fh:
-            json.dump(self.high_scores, fh)
+            json.dump(self.high_scores_dict, fh)
 
     def _get_username(self):
         self._display_usernameprompt()

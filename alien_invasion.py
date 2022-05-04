@@ -150,6 +150,7 @@ class AlienInvasion:
         self.settings.initialize_dynamic_settings()
         self.stats.reset_stats()
         self.stats.game_active = True
+        self.stats.high_score_flag = False
         self.sb.prep_score()
         self.sb.prep_level()
         self.sb.prep_ships()

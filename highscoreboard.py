@@ -17,13 +17,27 @@ class Highscoreboard():
         count = 0
         temp = dict()
         self._display_headers()
-        for (key, value) in self.stats.high_scores.items():
-            temp[value] = key
+        self._display_personal_scores()
 
-        for value in sorted(temp.keys(), reverse=True):
-            count += 1
-            if count <= 5:
-                self._display_score(temp[value], value, count)
+    def _display_personal_scores(self):
+        personal_highscores = sorted(self.stats.high_scores_list, reverse=True)
+        for score in personal_highscores:
+            self._display_personal_score(
+                score, personal_highscores.index(score) + 1)
+
+    def _display_personal_score(self, highscore, SN):
+        rounded_score = round(highscore, -1)
+        score_str = "{:,}".format(rounded_score)
+        score_str = str(SN) + '. ' + self.stats.username + ': ' + score_str
+        self.score_image = self.font.render(
+            score_str, True, self.text_color, self.settings.bg_color)
+
+        # display score at topright
+        self.score_rect = self.score_image.get_rect()
+        self.score_rect.left = self.screen.get_rect().left + 100
+        self.score_rect.centery = 250 + SN * 75
+
+        self.screen.blit(self.score_image, self.score_rect)
 
     def _display_score(self, username, highscore, count):
         rounded_score = round(highscore, -1)
