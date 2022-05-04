@@ -1,5 +1,6 @@
 import pygame
 import pygame.font
+import sys
 
 
 class Highscoreboard():
@@ -15,9 +16,42 @@ class Highscoreboard():
 
     def display_scoreboard(self):
         count = 0
-        temp = dict()
         self._display_headers()
         self._display_personal_scores()
+        self._prepare_global_dict()
+
+        for highscore in sorted(self.global_dict.keys(), reverse=True):
+            count += 1
+            self._display_score(self.global_dict[highscore], highscore, count)
+
+    def _prepare_global_dict(self):
+        self.global_dict = dict()
+        self._prepare_global_list()
+        for score in self.top5_list:
+            for userkey, scorevalues in self.stats.high_scores_dict.items():
+                if score in scorevalues:
+                    tempuser = self.global_dict.get(score, '')
+                    if tempuser == userkey:
+                        self.global_dict[score] = str(tempuser)
+
+                    elif tempuser == '':
+                        self.global_dict[score] = userkey
+
+                    else:
+                        self.global_dict[score] = str(
+                            tempuser) + ', ' + userkey
+
+    def _prepare_global_list(self):
+        self.top5_list = list()
+        for singlelist in self.stats.high_scores_dict.values():
+            for singlescore in singlelist:
+                if len(self.top5_list) < 5 and singlescore not in self.top5_list:
+                    self.top5_list.append(singlescore)
+                if len(self.top5_list) == 5:
+                    min_score = min(self.top5_list)
+                    index_min = self.top5_list.index(min_score)
+                    if singlescore > min_score and singlescore not in self.top5_list:
+                        self.top5_list[index_min] = singlescore
 
     def _display_personal_scores(self):
         personal_highscores = sorted(self.stats.high_scores_list, reverse=True)
