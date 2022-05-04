@@ -57,35 +57,29 @@ class Scoreboard:
                 self.min_pos = self.stats.high_scores_list.index(
                     min(self.stats.high_scores_list))
                 self.stats.high_scores_list[self.min_pos] = self.stats.score
-                self.stats.high_score = max(self.stats.high_scores_list)
-                self.stats.high_scores_dict[self.stats.username] = self.stats.high_scores_list
-                self.stats.save_highscores()
-                self.prep_high_score()
+                self._update_highscores()
                 self.stats.high_score_flag = True
 
             if self.stats.high_score_flag and self.stats.score > self.stats.high_scores_list[self.min_pos]:
                 self.stats.high_scores_list[self.min_pos] = self.stats.score
-                self.stats.high_score = max(self.stats.high_scores_list)
-                self.stats.high_scores_dict[self.stats.username] = self.stats.high_scores_list
-                self.stats.save_highscores()
-                self.prep_high_score()
+                self._update_highscores()
 
         else:
             if self.stats.high_score_flag and self.stats.score > self.stats.high_scores_list[len(self.stats.high_scores_list) - 1]:
                 self.stats.high_scores_list[len(
                     self.stats.high_scores_list) - 1] = self.stats.score
-                self.stats.high_score = max(self.stats.high_scores_list)
-                self.stats.high_scores_dict[self.stats.username] = self.stats.high_scores_list
-                self.stats.save_highscores()
-                self.prep_high_score()
+                self._update_highscores()
 
             if not self.stats.high_score_flag:
                 self.stats.high_scores_list.append(self.stats.score)
-                self.stats.high_score = max(self.stats.high_scores_list)
-                self.stats.high_scores_dict[self.stats.username] = self.stats.high_scores_list
-                self.stats.save_highscores()
-                self.prep_high_score()
+                self._update_highscores()
                 self.stats.high_score_flag = True
+
+    def _update_highscores(self):
+        self.stats.high_score = max(self.stats.high_scores_list)
+        self.stats.high_scores_dict[self.stats.username] = self.stats.high_scores_list
+        self.stats.save_highscores()
+        self.prep_high_score()
 
     def prep_level(self):
         level_str = str(self.stats.level)

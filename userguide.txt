@@ -6,4 +6,5 @@ How to play:
 - Use arrow keys (or A = left, D = right) to move the ship sideways.
 - When there are no ships available, the game is over.
 - Press 'Q' to quit and exit out of the game anytime.
-- Press 'Esc' to go back to home screen.
+- Press 'Backspace' to go back to home screen from game or highscorescreen.
+- Press 'Esc' to pause or unpause
