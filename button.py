@@ -1,9 +1,13 @@
+"""Includes class which defines button in the homescreen"""
+
 import pygame.font
 
 
 class Button:
+    """Cretes and manages the homescreen buttons"""
 
     def __init__(self, ai_game, buttonimg):
+        # initializes button properties
         self.screen = ai_game.screen
         self.screen_rect = self.screen.get_rect()
         self.buttonimg_path = buttonimg
@@ -13,6 +17,8 @@ class Button:
         self._choose_button_properties()
 
     def _choose_button_properties(self):
+        """chooses button properties for respective buttons"""
+
         if self.buttonimg_path == 'images/play.png' or self.buttonimg_path == 'images/play2.png':
             self.button_offset = -50
             self._prep_button()
@@ -27,6 +33,8 @@ class Button:
             self._prep_button()
 
     def _prep_button(self):
+        """prepares the button using the respective button properties"""
+
         self.button_img = pygame.image.load(self.buttonimg_path)
         self.button_img = pygame.transform.scale(
             self.button_img, self.buttonsize)
@@ -35,4 +43,6 @@ class Button:
         self.button_rect.centery = self.screen.get_rect().centery + self.button_offset
 
     def draw_button(self):
+        """draws the button to the screen"""
+
         self.screen.blit(self.button_img, self.button_rect)
