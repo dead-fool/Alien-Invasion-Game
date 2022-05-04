@@ -2,6 +2,7 @@ import json
 import pygame
 import pygame.font
 from time import sleep
+import sys
 
 
 class GameStats:
@@ -86,6 +87,10 @@ class GameStats:
                             text += event.unicode
                             if len(text) > 18:  # username can be upto 18 characters long
                                 text = text[:-1]
+
+                    else:
+                        if event.key == pygame.K_q:
+                            sys.exit()
             # blit the input box
             # width = 0 fills the rectangle
             pygame.draw.rect(self.screen, color, input_box, 0)

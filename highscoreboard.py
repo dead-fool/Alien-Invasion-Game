@@ -55,9 +55,11 @@ class Highscoreboard():
 
     def _display_personal_scores(self):
         personal_highscores = sorted(self.stats.high_scores_list, reverse=True)
+        index = 0
         for score in personal_highscores:
             self._display_personal_score(
-                score, personal_highscores.index(score) + 1)
+                score,  index + 1)
+            index += 1
 
     def _display_personal_score(self, highscore, SN):
         rounded_score = round(highscore, -1)
