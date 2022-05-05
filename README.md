@@ -20,7 +20,7 @@ Arrows keys (left - right) or keys (a - d) =Move the ship left / right
 #⚔ Let's play: 
 
 #Cloning the Repository: 
-$ git clone 
+$ git clone "https://github.com/dead-fool/Alien-Invasion-Game.git"
 $ cd Alien-Invasion
 
 #Running:
