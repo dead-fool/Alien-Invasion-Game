@@ -1,0 +1,4 @@
+Requirements:
+
+1. Python v3 and later
+2. Pygame
