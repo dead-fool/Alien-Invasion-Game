@@ -17,6 +17,11 @@ Pygame
 Space-bar = Shoot
 Arrows keys (left - right) or keys (a - d) =Move the ship left / right
 
+Navigation:
+Q = Quit
+Esc = Pause/Unpause
+Backspace = Homescreen
+
 #⚔ Let's play: 
 
 #Cloning the Repository: 
