@@ -25,4 +25,5 @@ $ cd Alien-Invasion
 
 #Running:
 $ python alien_invasion.py
+
 Enjoy!
