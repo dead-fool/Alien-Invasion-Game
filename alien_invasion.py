@@ -217,6 +217,7 @@ class AlienInvasion:
             self.stats.game_active = False
             self.scorescreen = False
             self.paused = False
+            self.homescreen = True
             pygame.mouse.set_visible(True)
 
         elif event.key == pygame.K_ESCAPE and not self.homescreen:
