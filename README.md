@@ -26,7 +26,7 @@ Backspace = Homescreen
 
 #Cloning the Repository: 
 $ git clone "https://github.com/dead-fool/Alien-Invasion-Game.git"
-$ cd Alien-Invasion
+$ cd Alien-Invasion-Game
 
 #Running:
 $ python alien_invasion.py
