@@ -41,6 +41,7 @@ class AlienInvasion:
 
         self._create_fleet()
         self.scorescreen = False
+        self.homescreen = True
         self.play_button = Button(self, "images/play.png")
         self.highscores_button = Button(self, "images/highscores.png")
         self.quit_button = Button(self, 'images/quit.png')
@@ -78,14 +79,14 @@ class AlienInvasion:
         # hover effect is not checked if the game is paused, else the buttons
         # will flicker during pause screen
 
-        if not self.paused:
+        if self.homescreen:
             self._hover_effect()
 
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 sys.exit()
 
-            elif event.type == pygame.MOUSEBUTTONDOWN and not self.paused:
+            elif event.type == pygame.MOUSEBUTTONDOWN and self.homescreen:
                 # checks for mouse click on homescreen only
                 mouse_pos = pygame.mouse.get_pos()
                 self._check_mousebuttondown_event(mouse_pos)
@@ -98,44 +99,44 @@ class AlienInvasion:
     def _hover_effect(self):
         """displays the buttons on homescreen differently when hovered"""
 
-        if not self.scorescreen:
+        if not self.scorescreen and self.homescreen:
             # displays the button in homescreen
 
             if self.play_button.button_rect.collidepoint(pygame.mouse.get_pos()) and self.stats.game_active == False:
                 # displays hovered play button
                 self.play_button = Button(self, 'images/play2.png')
                 self.play_button.draw_button()
-                pygame.display.flip()
+                
 
             if not self.play_button.button_rect.collidepoint(pygame.mouse.get_pos()) and not self.stats.game_active:
                 # displays normal play button
                 self.play_button = Button(self, 'images/play.png')
                 self.play_button.draw_button()
-                pygame.display.flip()
+                
 
             if self.highscores_button.button_rect.collidepoint(pygame.mouse.get_pos()) and self.stats.game_active == False:
                 # displays hovered highscores button
                 self.highscores_button = Button(self, 'images/highscores2.png')
                 self.highscores_button.draw_button()
-                pygame.display.flip()
+                
 
             if not self.highscores_button.button_rect.collidepoint(pygame.mouse.get_pos()) and not self.stats.game_active:
                 # displays normal highscores button
                 self.highscores_button = Button(self, 'images/highscores.png')
                 self.highscores_button.draw_button()
-                pygame.display.flip()
+                
 
             if self.quit_button.button_rect.collidepoint(pygame.mouse.get_pos()) and self.stats.game_active == False:
                 # displays hovered quit button
                 self.quit_button = Button(self, 'images/quit2.png')
                 self.quit_button.draw_button()
-                pygame.display.flip()
+                
 
             if not self.quit_button.button_rect.collidepoint(pygame.mouse.get_pos()) and not self.stats.game_active:
                 # displays normal quit button
                 self.quit_button = Button(self, 'images/quit.png')
                 self.quit_button.draw_button()
-                pygame.display.flip()
+                
 
     def _check_mousebuttondown_event(self, mouse_pos):
         """checks if the buttons are clicked by the mouse and directs respective actions"""
@@ -155,10 +156,12 @@ class AlienInvasion:
 
         if highscores_button_clicked and not self.stats.game_active:
             self.scorescreen = True
+            self.homescreen = False
 
     def _playbutton_action(self):
         """Displays GO msg and starts the game when play button is clicked"""
 
+        self.homescreen = False
         self._display_go_msg()
         pygame.display.flip()
         sleep(1)
@@ -216,7 +219,7 @@ class AlienInvasion:
             self.paused = False
             pygame.mouse.set_visible(True)
 
-        elif event.key == pygame.K_ESCAPE:
+        elif event.key == pygame.K_ESCAPE and not self.homescreen:
             # toggles the pause
 
             self.paused = not self.paused
@@ -334,6 +337,7 @@ class AlienInvasion:
             # if no ships are left, it redirects to the home screen.
             self._display_gameover()
             self.stats.game_active = False
+            self.homescreen = True
             pygame.mouse.set_visible(True)
 
     def _display_gameover(self):
@@ -403,10 +407,10 @@ class AlienInvasion:
 
         self.sb.show_score()
 
-        if not self.stats.game_active and not self.scorescreen:
+        if not self.stats.game_active and not self.scorescreen and self.homescreen:
             self._home_screen()
 
-        if not self.stats.game_active and self.scorescreen:
+        if not self.stats.game_active and self.scorescreen and not self.homescreen:
             self._score_screen()
 
         pygame.display.flip()
